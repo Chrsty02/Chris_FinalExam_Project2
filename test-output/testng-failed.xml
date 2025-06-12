@@ -3,15 +3,15 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Chris_FinalExam_Project2.Chris_FinalExam_Project2.E_Part1">
+      <class name="Chris_FinalExam_Project2.Chris_FinalExam_Project2.E_Part2">
         <methods>
-          <include name="initializer"/>
           <include name="afterEachTest"/>
+          <include name="initializer"/>
+          <include name="tearDown"/>
           <include name="testBondsTables"/>
           <include name="setUp"/>
-          <include name="tearDown"/>
         </methods>
-      </class> <!-- Chris_FinalExam_Project2.Chris_FinalExam_Project2.E_Part1 -->
+      </class> <!-- Chris_FinalExam_Project2.Chris_FinalExam_Project2.E_Part2 -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

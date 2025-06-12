@@ -119,71 +119,23 @@ public class E_Part1 {
                 By.xpath("//*[contains(text(),'Results for the last 90 days - Bonds')]")
             ));
 
+        } finally {
             logger.info("Checked for 'Last 90 Days Opening Results - Bonds'.");
             test.info("Checked for 'Last 90 Days Opening Results - Bonds'.");
-
-            // Click the first 5 links in the table, each in a new tab
-            logger.info("Locating the first 5 links in the table.");
-            test.info("Locating the first 5 links in the table.");
-            java.util.List<WebElement> links = driver.findElements(By.xpath("(//table)[1]//a"));
-            int linksToClick = Math.min(5, links.size());
-            String originalWindow = driver.getWindowHandle();
-
-            for (int i = 0; i < linksToClick; i++) {
-                WebElement link = links.get(i);
-                String href = link.getAttribute("href");
-                String linkText = link.getText();
-                logger.info("Opening link #" + (i + 1) + " in a new tab: " + linkText);
-                test.info("Opening link #" + (i + 1) + " in a new tab: " + linkText);
-
-                // Open link in a new tab
-                ((JavascriptExecutor) driver).executeScript("window.open(arguments[0], '_blank');", href);
-
-                // Switch to new tab
-                java.util.Set<String> windowHandles = driver.getWindowHandles();
-                for (String handle : windowHandles) {
-                    if (!handle.equals(originalWindow)) {
-                        driver.switchTo().window(handle);
-                        break;
-                    }
-                }
-
-                // Wait for the new page to load
-                new WebDriverWait(driver, Duration.ofSeconds(60)).until(
-                    webDriver -> ((JavascriptExecutor) webDriver)
-                        .executeScript("return document.readyState").equals("complete"));
-
-                String screenshotLink = captureScreenshot(driver);
-                test.addScreenCaptureFromPath(screenshotLink);
-
-                // Close the new tab and switch back
-                driver.close();
-                driver.switchTo().window(originalWindow);
-
-                // Re-locate the links after switching back
-                links = driver.findElements(By.xpath("(//table)[1]//a"));
-            }
-        } catch (Exception e) {
-            logger.error("Error during testBondsTables execution: " + e.getMessage(), e);
-            test.log(Status.FAIL, "Exception: " + e.getMessage());
         }
     }
 
     @AfterMethod
     public void afterEachTest(ITestResult result) throws IOException {
-        if (test != null) {
-            if (result.getStatus() == ITestResult.FAILURE) {
-                String screenshotPath = captureScreenshot(driver);
-                test.log(Status.FAIL, "Test Failed. Screenshot below:");
-                test.addScreenCaptureFromPath(screenshotPath);
-                logger.error("Test failed. Screenshot saved at: " + screenshotPath);
-            } else if (result.getStatus() == ITestResult.SUCCESS) {
-                test.log(Status.PASS, "Test Passed");
-            } else if (result.getStatus() == ITestResult.SKIP) {
-                test.log(Status.SKIP, "Test Skipped");
-            }
-        } else {
-            logger.warn("ExtentTest 'test' is null in afterEachTest.");
+        if (result.getStatus() == ITestResult.FAILURE) {
+            String screenshotPath = captureScreenshot(driver);
+            test.log(Status.FAIL, "Test Failed. Screenshot below:");
+            test.addScreenCaptureFromPath(screenshotPath);
+            logger.error("Test failed. Screenshot saved at: " + screenshotPath);
+        } else if (result.getStatus() == ITestResult.SUCCESS) {
+            test.log(Status.PASS, "Test Passed");
+        } else if (result.getStatus() == ITestResult.SKIP) {
+            test.log(Status.SKIP, "Test Skipped");
         }
         if (driver != null) {
             driver.quit();

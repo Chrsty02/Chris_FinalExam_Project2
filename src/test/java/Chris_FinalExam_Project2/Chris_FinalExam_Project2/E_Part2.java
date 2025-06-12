@@ -20,8 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-public class Logging1B {
-    static Logger logger = LogManager.getLogger(Logging1B.class);
+public class E_Part2 {
+    static Logger logger = LogManager.getLogger(E_Part2.class);
     private static ExtentSparkReporter sparkReporter;
     private static ExtentReports extent;
     WebDriver driver;
